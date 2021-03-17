@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 
-namespace WebApplication.Controllers
+namespace Hqv.Dominoes.WebApplication.Controllers
 {
     [ApiController]
     [Route("[controller]")]

@@ -2,6 +2,10 @@
 
     <PropertyGroup>
         <TargetFramework>net5.0</TargetFramework>
+        <RootNamespace>Hqv.Dominoes.WebApplication</RootNamespace>
+        <Company>HQV</Company>
+        <Product>Dominoes.WebApplication</Product>
+        <AssemblyName>Hqv.Dominoes.WebApplication</AssemblyName>
     </PropertyGroup>
 
     <ItemGroup>
