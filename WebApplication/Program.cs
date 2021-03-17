@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 
-namespace WebApplication
+namespace Hqv.Dominoes.WebApplication
 {
     public static class Program
     {
