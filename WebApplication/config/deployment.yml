@@ -21,11 +21,11 @@ spec:
     spec:
       containers:
       - name: dominoes-api
-        image: <Image>
-        resources:
-          limits:
-            memory: "128Mi"
-            cpu: "500m"
+        image: <IMAGE>
+#        resources:
+#          limits:
+#            memory: "128Mi"
+#            cpu: "1"
         ports:
         - containerPort: 80
 ---
