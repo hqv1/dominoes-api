@@ -44,7 +44,7 @@ jobs:
       - name: Push image to DigitalOcean Container Registry
         run: docker push registry.digitalocean.com/dominoes/dominoes-api:$(echo $GITHUB_SHA | head -c7)
 
-      # Deploy to DigitalOCcean Kubernetes.
+      # Deploy to DigitalOcean Kubernetes.
       - name: Update deployment file
         run: TAG=$(echo $GITHUB_SHA | head -c7) && sed -i 's|<IMAGE>|registry.digitalocean.com/dominoes/dominoes-api:'${TAG}'|' $GITHUB_WORKSPACE/WebApplication/config/deployment.yml
 

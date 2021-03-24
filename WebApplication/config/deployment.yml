@@ -21,7 +21,7 @@ spec:
     spec:
       containers:
       - name: dominoes-api
-        image: registry.digitalocean.com/dominoes:latest
+        image: <IMAGE>
 #        resources:
 #          limits:
 #            memory: "128Mi"
