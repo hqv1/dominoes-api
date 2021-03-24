@@ -39,7 +39,7 @@ jobs:
         run: ls .
 
       - name: Build container image
-        run: docker build -t registry.digitalocean.com/dominoes/dominoes-api:$(echo $GITHUB_SHA | head -c7) .
+        run: docker build -t registry.digitalocean.com/dominoes/dominoes-api:$(echo $GITHUB_SHA | head -c7) ./WebApplication
 
       - name: Log in to DigitalOcean Container Registry with short-lived credentials
         run: doctl registry login --expiry-seconds 1200
