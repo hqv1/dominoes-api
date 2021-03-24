@@ -35,9 +35,6 @@ jobs:
           token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
           
       # Build a Docker image of your application in your registry and tag the image with the $GITHUB_SHA.
-      - name: List directory
-        run: ls .
-
       - name: Build container image
         run: docker build -t registry.digitalocean.com/dominoes/dominoes-api:$(echo $GITHUB_SHA | head -c7) ./WebApplication
 
@@ -49,7 +46,7 @@ jobs:
 
       # Deploy to DigitalOCcean Kubernetes.
       - name: Update deployment file
-        run: TAG=$(echo $GITHUB_SHA | head -c7) && sed -i 's|<IMAGE>|registry.digitalocean.com/dominoes/dominoes-api:'${TAG}'|' $GITHUB_WORKSPACE/config/deployment.yml
+        run: TAG=$(echo $GITHUB_SHA | head -c7) && sed -i 's|<IMAGE>|registry.digitalocean.com/dominoes/dominoes-api:'${TAG}'|' $GITHUB_WORKSPACE/WebApplication/config/deployment.yml
 
       - name: Save DigitalOcean kubeconfig with short-lived credentials
         run: doctl kubernetes cluster kubeconfig save --expiry-seconds 600 mycluster
