@@ -49,7 +49,7 @@ jobs:
         run: TAG=$(echo $GITHUB_SHA | head -c7) && sed -i 's|<IMAGE>|registry.digitalocean.com/dominoes/dominoes-api:'${TAG}'|' $GITHUB_WORKSPACE/WebApplication/config/deployment.yml
 
       - name: Save DigitalOcean kubeconfig with short-lived credentials
-        run: doctl kubernetes cluster kubeconfig save --expiry-seconds 600 mycluster
+        run: doctl kubernetes cluster kubeconfig save --expiry-seconds 600 k8s-dominoes-dev
         
       - name: Deploy to DigitalOcean Kubernetes
         run: kubectl apply -f $GITHUB_WORKSPACE/config/deployment.yml
