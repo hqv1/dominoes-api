@@ -34,11 +34,11 @@ jobs:
           username: ${{ secrets.DOCKER_HUB_USERNAME  }}
           password: ${{ secrets.DOCKER_HUB_TOKEN  }}
 
-      - name: Build container image
-        run: docker buildx build -t hqv1/dominoes-api:$(echo $GITHUB_SHA | head -c7) ./WebApplication
+      - name: Build and push container image
+        run: docker buildx build --push --linux/arm64/v8,linux/amd64 -t hqv1/dominoes-api:$(echo $GITHUB_SHA | head -c7) ./WebApplication
 
-      - name: Push image to Container Registry
-        run: docker push hqv1/dominoes-api:$(echo $GITHUB_SHA | head -c7)
+      #- name: Push image to Container Registry
+      #  run: docker push hqv1/dominoes-api:$(echo $GITHUB_SHA | head -c7)
 
       # - name: Build and push
       #   id: docker_build
