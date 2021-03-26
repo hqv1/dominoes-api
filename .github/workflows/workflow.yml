@@ -53,7 +53,7 @@ jobs:
           context: ./WebApplication
           platforms: linux/amd64,linux/arm64
           push: true
-          tags: hqv1/dominoes-api:$SHA8
+          tags: hqv1/dominoes-api:$GITHUB_SHA_SHORT
 
       - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
