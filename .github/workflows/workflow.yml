@@ -6,7 +6,9 @@ name: CI
 on:
   # Triggers the workflow on push or pull request events but only for the main branch
   push:
-    branches: [ main ]
+    # branches: [ main ]
+    branches:
+      - '**'
   pull_request:
     branches: [ main ]
 
@@ -22,35 +24,60 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - name: Checkout branch
-        uses: actions/checkout@v2
-      
-      # Install doctl.
-      - name: Install doctl
-        uses: digitalocean/action-doctl@v2
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+
+      - name: Login to DockerHub
+        uses: docker/login-action@v1 
         with:
-          token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+          username: ${{ secrets.DOCKER_HUB_USERNAME  }}
+          password: ${{ secrets.DOCKER_HUB_TOKEN  }}
+
+      - name: Build and push
+        id: docker_build
+        uses: docker/build-push-action@v2
+        with:
+          context: ./WebApplication
+          push: true
+          tags: hqv1/dominoes-api/$(echo $GITHUB_SHA | head -c7)
+
+      - name: Image digest
+        run: echo ${{ steps.docker_build.outputs.digest }}
+
+
+      # # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      # - name: Checkout branch
+      #   uses: actions/checkout@v2
+
+      # # Install doctl.
+      # - name: Install doctl
+      #   uses: digitalocean/action-doctl@v2
+      #   with:
+      #     token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
           
-      # Build a Docker image of your application in your registry and tag the image with the $GITHUB_SHA.
-      - name: Build container image
-        run: docker build -t registry.digitalocean.com/dominoes/dominoes-api:$(echo $GITHUB_SHA | head -c7) ./WebApplication
+      # # Build a Docker image of your application in your registry and tag the image with the $GITHUB_SHA.
+      # - name: Build container image
+      #   run: docker build -t registry.digitalocean.com/dominoes/dominoes-api:$(echo $GITHUB_SHA | head -c7) ./WebApplication
 
-      - name: Log in to DigitalOcean Container Registry with short-lived credentials
-        run: doctl registry login --expiry-seconds 1200
+      # - name: Log in to DigitalOcean Container Registry with short-lived credentials
+      #   run: doctl registry login --expiry-seconds 1200
 
-      - name: Push image to DigitalOcean Container Registry
-        run: docker push registry.digitalocean.com/dominoes/dominoes-api:$(echo $GITHUB_SHA | head -c7)
+      # - name: Push image to DigitalOcean Container Registry
+      #   run: docker push registry.digitalocean.com/dominoes/dominoes-api:$(echo $GITHUB_SHA | head -c7)
 
-      # Deploy to DigitalOcean Kubernetes.
-      - name: Update deployment file
-        run: TAG=$(echo $GITHUB_SHA | head -c7) && sed -i 's|<IMAGE>|registry.digitalocean.com/dominoes/dominoes-api:'${TAG}'|' $GITHUB_WORKSPACE/WebApplication/config/deployment.yml
+      # # Deploy to DigitalOcean Kubernetes.
+      # - name: Update deployment file
+      #   run: TAG=$(echo $GITHUB_SHA | head -c7) && sed -i 's|<IMAGE>|registry.digitalocean.com/dominoes/dominoes-api:'${TAG}'|' $GITHUB_WORKSPACE/WebApplication/config/deployment.yml
 
-      - name: Save DigitalOcean kubeconfig with short-lived credentials
-        run: doctl kubernetes cluster kubeconfig save --expiry-seconds 600 k8s-dominoes-dev
+      # - name: Save DigitalOcean kubeconfig with short-lived credentials
+      #   run: doctl kubernetes cluster kubeconfig save --expiry-seconds 600 k8s-dominoes-dev
         
-      - name: Deploy to DigitalOcean Kubernetes
-        run: kubectl apply -f $GITHUB_WORKSPACE/WebApplication/config/deployment.yml
+      # - name: Deploy to DigitalOcean Kubernetes
+      #   run: kubectl apply -f $GITHUB_WORKSPACE/WebApplication/config/deployment.yml
 
-      - name: Verify deployment
-        run: kubectl rollout status deployment/dominoes-api
+      # - name: Verify deployment
+      #   run: kubectl rollout status deployment/dominoes-api
