@@ -25,11 +25,8 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
 
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v1
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v1
+      - name: Checkout branch
+        uses: actions/checkout@v2
 
       - name: Login to DockerHub
         uses: docker/login-action@v1 
@@ -37,17 +34,23 @@ jobs:
           username: ${{ secrets.DOCKER_HUB_USERNAME  }}
           password: ${{ secrets.DOCKER_HUB_TOKEN  }}
 
-      - name: Build and push
-        id: docker_build
-        uses: docker/build-push-action@v2
-        with:
-          context: WebApplication
-          file: WebApplication/Dockerfile
-          push: true
-          tags: hqv1/dominoes-api:latest
+      - name: Build container image
+        run: docker build -t hqv1/dominoes-api:$(echo $GITHUB_SHA | head -c7) ./WebApplication
 
-      - name: Image digest
-        run: echo ${{ steps.docker_build.outputs.digest }}
+      - name: Push image to DigitalOcean Container Registry
+        run: docker push hqv1/dominoes-api:$(echo $GITHUB_SHA | head -c7)
+
+      # - name: Build and push
+      #   id: docker_build
+      #   uses: docker/build-push-action@v2
+      #   with:
+      #     context: WebApplication
+      #     file: WebApplication/Dockerfile
+      #     push: true
+      #     tags: hqv1/dominoes-api:latest
+
+      # - name: Image digest
+      #   run: echo ${{ steps.docker_build.outputs.digest }}
 
 
       # # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
