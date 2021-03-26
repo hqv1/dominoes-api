@@ -64,7 +64,7 @@ jobs:
           context: ./WebApplication
           platforms: linux/amd64,linux/arm64
           push: true
-          tags: hqv1/dominoes-api:$SHORT_SHA
+          tags: hqv1/dominoes-api:${{ steps.vars.outputs.sha_short }}
         env:
           SHORT_SHA: ${{ steps.vars.outputs.sha_short }}
 
