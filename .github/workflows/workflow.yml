@@ -42,7 +42,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           # context: ./WebApplication
-          # file: ./WebApplication/Dockerfile
+          file: ./WebApplication/Dockerfile
           push: true
           tags: hqv1/dominoes-api:latest
 
