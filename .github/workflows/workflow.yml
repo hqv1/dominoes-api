@@ -51,20 +51,22 @@ jobs:
         run: |
          echo ::set-output name=sha_short::$(git rev-parse --short=7 ${{ github.sha }})
 
-      - name: use env
-        run: |
-          echo $SHORT_SHA_TEST
-        env:
-          SHORT_SHA_TEST: ${{ steps.vars.outputs.sha_short }}
+      # - name: use env
+      #   run: |
+      #     echo $SHORT_SHA_TEST
+      #   env:
+      #     SHORT_SHA_TEST: ${{ steps.vars.outputs.sha_short }}
 
-      # - name: Build and push
-      #   id: docker_build
-      #   uses: docker/build-push-action@v2
-      #   with:
-      #     context: ./WebApplication
-      #     platforms: linux/amd64,linux/arm64
-      #     push: true
-      #     tags: hqv1/dominoes-api:$GITHUB_SHA_SHORT
+      - name: Build and push
+        id: docker_build
+        uses: docker/build-push-action@v2
+        with:
+          context: ./WebApplication
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: hqv1/dominoes-api:$SHORT_SHA
+        env:
+          SHORT_SHA: ${{ steps.vars.outputs.sha_short }}
 
       # - name: Image digest
       #   run: echo ${{ steps.docker_build.outputs.digest }}
