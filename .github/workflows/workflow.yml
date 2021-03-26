@@ -43,7 +43,7 @@ jobs:
         with:
           context: ./WebApplication
           push: true
-          tags: hqv1/dominoes-api/$(echo $GITHUB_SHA | head -c7)
+          tags: hqv1/dominoes-api:$(echo $GITHUB_SHA | head -c7)
 
       - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
