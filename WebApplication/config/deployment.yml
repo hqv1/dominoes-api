@@ -20,12 +20,12 @@ spec:
         app: dominoes-api
     spec:
       containers:
-      - name: dominoes-api
-        image: <IMAGE>
-#        resources:
-#          limits:
-#            memory: "128Mi"
-#            cpu: "1"
+      - name: dominoes-api        
+        image: hqv1/dominoes-api
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: ".5m"
         ports:
         - containerPort: 80
 ---
@@ -34,11 +34,10 @@ kind: Service
 metadata:
   name: dominoes-api
 spec:
-  type: LoadBalancer
+  type: NodePort
   ports:
-    - name: http
-      protocol: TCP
-      port: 80
+    - port: 80
       targetPort: 80
+      nodePort: 30001
   selector:
     app: dominoes-api

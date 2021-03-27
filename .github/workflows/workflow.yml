@@ -2,9 +2,7 @@
 
 name: CI
 
-# Controls when the action will run. 
 on:
-  # Triggers the workflow on push or pull request events but only for the main branch
   push:
     branches: [ main ]
   pull_request:
@@ -13,44 +11,53 @@ on:
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
-  build:
-    # The type of runner that the job will run on
+
+  deploy:
+
     runs-on: ubuntu-latest
 
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+
       - name: Checkout branch
         uses: actions/checkout@v2
-      
-      # Install doctl.
-      - name: Install doctl
-        uses: digitalocean/action-doctl@v2
+
+      - name: Login to DockerHub
+        uses: docker/login-action@v1 
         with:
-          token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
-          
-      # Build a Docker image of your application in your registry and tag the image with the $GITHUB_SHA.
-      - name: Build container image
-        run: docker build -t registry.digitalocean.com/dominoes/dominoes-api:$(echo $GITHUB_SHA | head -c7) ./WebApplication
+          username: ${{ secrets.DOCKER_HUB_USERNAME  }}
+          password: ${{ secrets.DOCKER_HUB_TOKEN  }}
 
-      - name: Log in to DigitalOcean Container Registry with short-lived credentials
-        run: doctl registry login --expiry-seconds 1200
+      - name: Get Short SHA
+        id: vars
+        run: |
+         echo ::set-output name=sha_short::$(git rev-parse --short=7 ${{ github.sha }})
 
-      - name: Push image to DigitalOcean Container Registry
-        run: docker push registry.digitalocean.com/dominoes/dominoes-api:$(echo $GITHUB_SHA | head -c7)
+      - name: Build and push Docker image
+        id: docker_build
+        uses: docker/build-push-action@v2
+        with:
+          context: ./WebApplication
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: hqv1/dominoes-api:${{ steps.vars.outputs.sha_short }}
+  
+      - name: Set K8s context
+        id: setcontext
+        uses: azure/k8s-set-context@v1
+        with:
+          method: kubeconfig
+          kubeconfig: ${{ secrets.KUBE_CONFIG }}                  
 
-      # Deploy to DigitalOcean Kubernetes.
-      - name: Update deployment file
-        run: TAG=$(echo $GITHUB_SHA | head -c7) && sed -i 's|<IMAGE>|registry.digitalocean.com/dominoes/dominoes-api:'${TAG}'|' $GITHUB_WORKSPACE/WebApplication/config/deployment.yml
-
-      - name: Save DigitalOcean kubeconfig with short-lived credentials
-        run: doctl kubernetes cluster kubeconfig save --expiry-seconds 600 k8s-dominoes-dev
-        
-      - name: Deploy to DigitalOcean Kubernetes
-        run: kubectl apply -f $GITHUB_WORKSPACE/WebApplication/config/deployment.yml
-
-      - name: Verify deployment
-        run: kubectl rollout status deployment/dominoes-api
+      - uses: Azure/k8s-deploy@v1.4
+        with:
+          namespace: 'dominoes'
+          manifests: ./WebApplication/config/deployment.yml
+          images: 'hqv1/dominoes-api:${{ steps.vars.outputs.sha_short }}'          
+          kubectl-version: 'latest'
