@@ -50,8 +50,8 @@ jobs:
           push: true
           tags: hqv1/dominoes-api:${{ steps.vars.outputs.sha_short }}
           
-      - name: Update deployment file
-        run: sed -i 's|<IMAGE>|hqv1/dominoes-api:'${{ steps.vars.outputs.sha_short }}'|' $GITHUB_WORKSPACE/WebApplication/config/deployment.yml
+      # - name: Update deployment file
+      #   run: sed -i 's|<IMAGE>|hqv1/dominoes-api:'${{ steps.vars.outputs.sha_short }}'|' $GITHUB_WORKSPACE/WebApplication/config/deployment.yml
 
       - name: Set K8s context
         id: setcontext
@@ -60,8 +60,15 @@ jobs:
           method: kubeconfig
           kubeconfig: ${{ secrets.KUBE_CONFIG }}                  
 
-      - name: Deploy to K8s
-        run: kubectl apply -f $GITHUB_WORKSPACE/WebApplication/config/deployment.yml
+      - uses: Azure/k8s-deploy@v1.4
+        with:
+          namespace: 'dominoes'
+          manifests: WebApplication/config/deployment.yaml
+          images: 'hqv1/dominoes-api:${{ steps.vars.outputs.sha_short }}'          
+          kubectl-version: 'latest'
 
-      - name: Verify deployment
-        run: kubectl rollout status deployment/dominoes-api
+      # - name: Deploy to K8s
+      #   run: kubectl apply -f $GITHUB_WORKSPACE/WebApplication/config/deployment.yml
+
+      # - name: Verify deployment
+      #   run: kubectl rollout status deployment/dominoes-api
