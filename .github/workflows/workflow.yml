@@ -57,10 +57,12 @@ jobs:
       # - name: Update deployment file
       #   run: sed -i 's|<IMAGE>|hqv1/dominoes-api:'${{ steps.vars.outputs.sha_short }}'|' $GITHUB_WORKSPACE/WebApplication/config/deployment.yml
 
-      - name: Add Kubernetes config
-        run: |
-          mkdir -p ~/.kube
-          echo ${{ secrets.KUBE_CONFIG }} | base64 -d > ~/.kube/config
+      - uses: azure/k8s-set-context@v1
+        with:
+          method: kubeconfig
+          kubeconfig: ${{ secrets.KUBE_CONFIG }}
+          #context: <context name>  #If left unspecified, current-context from kubeconfig is used as default
+        id: setcontext
 
       - name: Deploy to DigitalOcean Kubernetes
         run: kubectl apply -f $GITHUB_WORKSPACE/WebApplication/config/deployment.yml
