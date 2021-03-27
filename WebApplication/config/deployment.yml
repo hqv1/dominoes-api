@@ -21,7 +21,8 @@ spec:
     spec:
       containers:
       - name: dominoes-api
-        image: <IMAGE>
+        #image: <IMAGE>
+        image: hqv1/dominoes-api:856fe1f
         resources:
           limits:
             memory: "128Mi"
