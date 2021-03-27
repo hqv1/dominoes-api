@@ -54,11 +54,11 @@ jobs:
         run: sed -i 's|<IMAGE>|hqv1/dominoes-api:'${{ steps.vars.outputs.sha_short }}'|' $GITHUB_WORKSPACE/WebApplication/config/deployment.yml
 
       - name: Set K8s context
-      - uses: azure/k8s-set-context@v1
+        id: setcontext
+        uses: azure/k8s-set-context@v1
         with:
           method: kubeconfig
-          kubeconfig: ${{ secrets.KUBE_CONFIG }}          
-        id: setcontext
+          kubeconfig: ${{ secrets.KUBE_CONFIG }}                  
 
       - name: Deploy to K8s
         run: kubectl apply -f $GITHUB_WORKSPACE/WebApplication/config/deployment.yml
