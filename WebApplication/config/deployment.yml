@@ -20,8 +20,7 @@ spec:
         app: dominoes-api
     spec:
       containers:
-      - name: dominoes-api
-        #image: <IMAGE>
+      - name: dominoes-api        
         image: hqv1/dominoes-api
         resources:
           limits:
