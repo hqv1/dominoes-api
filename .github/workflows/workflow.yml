@@ -63,7 +63,7 @@ jobs:
       - uses: Azure/k8s-deploy@v1.4
         with:
           namespace: 'dominoes'
-          manifests: $GITHUB_WORKSPACE/WebApplication/config/deployment.yml
+          manifests: ./WebApplication/config/deployment.yml
           images: 'hqv1/dominoes-api:${{ steps.vars.outputs.sha_short }}'          
           kubectl-version: 'latest'
 
