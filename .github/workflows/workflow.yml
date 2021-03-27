@@ -41,14 +41,14 @@ jobs:
         run: |
          echo ::set-output name=sha_short::$(git rev-parse --short=7 ${{ github.sha }})
 
-      - name: Build and push Docker image
-        id: docker_build
-        uses: docker/build-push-action@v2
-        with:
-          context: ./WebApplication
-          platforms: linux/amd64,linux/arm64
-          push: true
-          tags: hqv1/dominoes-api:${{ steps.vars.outputs.sha_short }}
+      # - name: Build and push Docker image
+      #   id: docker_build
+      #   uses: docker/build-push-action@v2
+      #   with:
+      #     context: ./WebApplication
+      #     platforms: linux/amd64,linux/arm64
+      #     push: true
+      #     tags: hqv1/dominoes-api:${{ steps.vars.outputs.sha_short }}
           
       # - name: Update deployment file
       #   run: sed -i 's|<IMAGE>|hqv1/dominoes-api:'${{ steps.vars.outputs.sha_short }}'|' $GITHUB_WORKSPACE/WebApplication/config/deployment.yml
@@ -63,7 +63,7 @@ jobs:
       - uses: Azure/k8s-deploy@v1.4
         with:
           namespace: 'dominoes'
-          manifests: WebApplication/config/deployment.yaml
+          manifests: $GITHUB_WORKSPACE/WebApplication/config/deployment.yml
           images: 'hqv1/dominoes-api:${{ steps.vars.outputs.sha_short }}'          
           kubectl-version: 'latest'
 
