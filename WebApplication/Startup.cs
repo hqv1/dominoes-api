@@ -1,3 +1,4 @@
+using Hqv.Dominoes.WebApplication.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -24,6 +25,10 @@ namespace Hqv.Dominoes.WebApplication
             {
                 c.SwaggerDoc("v1", new OpenApiInfo {Title = "WebApplication", Version = "v1"});
             });
+            
+            services.AddAutoMapper(typeof(Startup));
+
+            services.AddSingleton<GameService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
