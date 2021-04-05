@@ -4,9 +4,9 @@ using Hqv.Dominoes.WebApplication.Models;
 
 namespace Hqv.Dominoes.WebApplication.Setup
 {
-    public class ModelProfile: Profile
+    public class AutoMapperProfile: Profile
     {
-        public ModelProfile()
+        public AutoMapperProfile()
         {
             CreateMap<PlayerModel, Player>();
             CreateMap<CreateGameModel, CreateGameEvent>();

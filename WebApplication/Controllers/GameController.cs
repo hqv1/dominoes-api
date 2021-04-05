@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using Hqv.Dominoes.WebApplication.Models;
 using Hqv.Dominoes.WebApplication.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -16,9 +17,15 @@ namespace Hqv.Dominoes.WebApplication.Controllers
         }
         
         [HttpPost]
-        public void Post([FromBody] CreateGameModel createGameModel)
+        public async Task<IActionResult> Post([FromBody] CreateGameModel createGameModel)
         {
-            _gameService.Create(createGameModel);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            
+            await _gameService.Create(createGameModel);
+            return Ok();
         }
     }
 }

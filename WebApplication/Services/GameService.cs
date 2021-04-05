@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using AutoMapper;
 using Hqv.Dominoes.WebApplication.Components;
 using Hqv.Dominoes.WebApplication.Events;
@@ -16,10 +17,10 @@ namespace Hqv.Dominoes.WebApplication.Services
             _publisher = publisher;
         }
         
-        public void Create(CreateGameModel createGameModel)
+        public async Task Create(CreateGameModel createGameModel)
         {
             var createGameEvent = _mapper.Map<CreateGameEvent>(createGameModel);
-            _publisher.Publish(createGameEvent);
+            await _publisher.Publish(createGameEvent);
         }
     }
 }
