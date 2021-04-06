@@ -25,14 +25,16 @@ namespace Hqv.Dominoes.WebApplication.Test
             // Given a mapper
             var mapper = new MapperConfiguration(c => c.AddProfile<AutoMapperProfile>())
                 .CreateMapper();
-            
+
             // When mapper is used
             var actualCreateGameEvent = mapper.Map<CreateGameEvent>(inputCreateGameModel);
             
             // Then a Create Game Event is created
+            // And some values are mapped
             var inputPlayer = inputCreateGameModel.Player;
             var actualPlayer = actualCreateGameEvent.Player;
-            //actualPlayer.Id.Should().BeSameAs(inputPlayer?.Id);
+            actualCreateGameEvent.CorrelationId.Should().BeSameAs(inputCreateGameModel.CorrelationId);
+            actualPlayer.Id.Should().BeSameAs(inputPlayer?.Id);
         }
     }
 }
