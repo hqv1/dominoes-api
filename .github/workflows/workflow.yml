@@ -47,19 +47,26 @@ jobs:
           platforms: linux/amd64,linux/arm64
           push: true
           tags: hqv1/dominoes-api:${{ steps.vars.outputs.sha_short }}
-          build-args: ASPNETCORE_ENVIRONMENT=Staging
   
       - name: Set K8s context
         id: setcontext
         uses: azure/k8s-set-context@v1
         with:
           method: kubeconfig
-          kubeconfig: ${{ secrets.KUBE_CONFIG }}                  
+          kubeconfig: ${{ secrets.KUBE_CONFIG }}            
+
+      - name: Variable Substitution in K8s Deployment file
+        uses: danielr1996/envsubst-action@1.0.0
+        env:
+            ASPNETCORE_ENVIRONMENT: Staging
+        with:
+          input: ./WebApplication/config/deployment.yml
+          output: ./WebApplication/config/deployment_updated.yml      
 
       - name: Deploy to Kubernetes cluster
         uses: Azure/k8s-deploy@v1.4
         with:
           namespace: 'dominoes'
-          manifests: ./WebApplication/config/deployment.yml
+          manifests: ./WebApplication/config/deployment_updated.yml # Uses the output from Variable Substitution in K8s Deployment file
           images: 'hqv1/dominoes-api:${{ steps.vars.outputs.sha_short }}'          
           kubectl-version: 'latest'
