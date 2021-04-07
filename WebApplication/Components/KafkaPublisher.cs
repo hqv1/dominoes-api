@@ -27,7 +27,6 @@ namespace Hqv.Dominoes.WebApplication.Components
             _kafkaProducerOptions = options.Value;
             _kafkaProducerOptions.Validate();
             
-            _logger.LogInformation($"Temp: Kafka Servers:{_kafkaProducerOptions.BootstrapServers}");
             var producerConfig = new ProducerConfig
             {
                 BootstrapServers = _kafkaProducerOptions.BootstrapServers,
@@ -41,7 +40,6 @@ namespace Hqv.Dominoes.WebApplication.Components
         {
             using var producer = _producerBuilder.Build();
 
-            _logger.LogInformation("TEMP: Getting ready to send Create Game Event to kafka topic.");
             // Not the best way to implement this but good enough for now. See the confluent link for the reason why.
             var result = (await producer.ProduceAsync(_kafkaProducerOptions.TopicName, new Message<string, string>()
             {

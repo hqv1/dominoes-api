@@ -18,11 +18,7 @@ namespace Hqv.Dominoes.WebApplication.Controllers
         [HttpGet]
         public string Get()
         {
-            var dotnetEnvironmentVariable = Environment.GetEnvironmentVariable("DOTNET_ENVIRONMENT");
-            var aspNetCoreEnvironmentVariable = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
             _logger.LogInformation("Received Hello World request");
-            _logger.LogInformation($"DotNet Environment is {dotnetEnvironmentVariable}");
-            _logger.LogInformation($"ASP NET CORE Environment is {aspNetCoreEnvironmentVariable}");
             return "Hello World";
         }
     }
