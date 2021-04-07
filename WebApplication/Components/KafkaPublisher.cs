@@ -2,6 +2,7 @@ using System.Threading.Tasks;
 using Confluent.Kafka;
 using Hqv.Dominoes.WebApplication.Events;
 using Hqv.Dominoes.WebApplication.Setup;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 
@@ -16,11 +17,13 @@ namespace Hqv.Dominoes.WebApplication.Components
      */
     public class KafkaPublisher : IPublisher
     {
+        private readonly ILogger<KafkaPublisher> _logger;
         private readonly KafkaProducerOptions _kafkaProducerOptions;
         private readonly ProducerBuilder<string, string> _producerBuilder;
 
-        public KafkaPublisher(IOptions<KafkaProducerOptions> options)
+        public KafkaPublisher(IOptions<KafkaProducerOptions> options, ILogger<KafkaPublisher> logger)
         {
+            _logger = logger;
             _kafkaProducerOptions = options.Value;
             _kafkaProducerOptions.Validate();
             
@@ -45,6 +48,7 @@ namespace Hqv.Dominoes.WebApplication.Components
             }));
             
             // todo: log the result information
+            _logger.LogInformation($"Create Game Event created in partition {result.Partition.Value} offset {result.Offset.Value}");
         }
     }
 }
