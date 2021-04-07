@@ -28,6 +28,9 @@ spec:
             cpu: ".5m"
         ports:
         - containerPort: 80
+        env: 
+        - name: ASPNETCORE_ENVIRONMENT 
+          value:  "$ASPNETCORE_ENVIRONMENT"
 ---
 apiVersion: v1
 kind: Service
