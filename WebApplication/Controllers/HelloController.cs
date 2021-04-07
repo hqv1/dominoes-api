@@ -1,4 +1,6 @@
+using System;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace Hqv.Dominoes.WebApplication.Controllers
 {
@@ -6,9 +8,21 @@ namespace Hqv.Dominoes.WebApplication.Controllers
     [Route("[controller]")]
     public class HelloController : ControllerBase
     {
+        private readonly ILogger<HelloController> _logger;
+
+        public HelloController(ILogger<HelloController> logger)
+        {
+            _logger = logger;
+        }
+        
         [HttpGet]
         public string Get()
         {
+            var dotnetEnvironmentVariable = Environment.GetEnvironmentVariable("DOTNET_ENVIRONMENT");
+            var aspNetCoreEnvironmentVariable = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+            _logger.LogInformation("Received Hello World request");
+            _logger.LogInformation($"DotNet Environment is {dotnetEnvironmentVariable}");
+            _logger.LogInformation($"ASP NET CORE Environment is {aspNetCoreEnvironmentVariable}");
             return "Hello World";
         }
     }
