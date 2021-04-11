@@ -20,15 +20,16 @@ namespace Hqv.Dominoes.WebApplication.Controllers
         }
         
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] CreateGameModel createGameModel)
+        public async Task<IActionResult> Post([FromBody] CreateGameModel createGameModel, [FromHeader] string correlationId)
         {
             _logger.LogInformation("Received Create Game Request");
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            
-            await _gameService.Create(createGameModel);
+
+            var createGameBag = new CreateGameBag(correlationId, createGameModel);
+            await _gameService.Create(createGameBag);
             return Ok();
         }
     }

@@ -17,9 +17,9 @@ namespace Hqv.Dominoes.WebApplication.Services
             _publisher = publisher;
         }
         
-        public async Task Create(CreateGameModel createGameModel)
+        public async Task Create(CreateGameBag createGameBag)
         {
-            var createGameEvent = _mapper.Map<CreateGameEvent>(createGameModel);
+            var createGameEvent = _mapper.Map<CreateGameEvent>(createGameBag);
             await _publisher.Publish(createGameEvent);
         }
     }

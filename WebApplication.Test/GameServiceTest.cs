@@ -30,16 +30,16 @@ namespace Hqv.Dominoes.WebApplication.Test
         public void ShouldCreate()
         {
             // Given Create Game Model
-            var inputCreateGameModel = _testDataCreator.GenerateCreateGameModel();
+            var inputCreateGameBag = _testDataCreator.GenerateCreateGameBag();
             var createGameEvent = _testDataCreator.GenerateCreateGameEvent();
 
-            _mockedMapper.Setup(x => x.Map<CreateGameEvent>(inputCreateGameModel)).Returns(createGameEvent);
+            _mockedMapper.Setup(x => x.Map<CreateGameEvent>(inputCreateGameBag)).Returns(createGameEvent);
             
             // When Create is Called
-            _gameService.Create(inputCreateGameModel);
+            _gameService.Create(inputCreateGameBag);
             
             // Then methods are called
-            _mockedMapper.Verify(x=>x.Map<CreateGameEvent>(inputCreateGameModel));
+            _mockedMapper.Verify(x=>x.Map<CreateGameEvent>(inputCreateGameBag));
             _mockedPublisher.Verify(x=>x.Publish(createGameEvent));
         }
     }
