@@ -41,14 +41,13 @@ namespace Hqv.Dominoes.WebApplication.Components
             using var producer = _producerBuilder.Build();
 
             // Not the best way to implement this but good enough for now. See the confluent link for the reason why.
-            var result = (await producer.ProduceAsync(_kafkaProducerOptions.TopicName, new Message<string, string>()
+            var result = await producer.ProduceAsync(_kafkaProducerOptions.TopicName, new Message<string, string>()
             {
                 Key = createGameEvent.CorrelationId,
                 Value = JsonConvert.SerializeObject(createGameEvent)
-            }));
+            });
             
-            // todo: log the result information
-            _logger.LogInformation($"Create Game Event created in partition {result.Partition.Value} offset {result.Offset.Value}");
+            _logger.LogInformation($"CreateGame Event published to partition {result.Partition.Value} offset {result.Offset.Value}");
         }
     }
 }
