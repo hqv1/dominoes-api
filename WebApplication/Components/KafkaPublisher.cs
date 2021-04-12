@@ -47,7 +47,8 @@ namespace Hqv.Dominoes.WebApplication.Components
                 Value = JsonConvert.SerializeObject(createGameEvent)
             });
             
-            _logger.LogInformation($"CreateGame Event published to partition {result.Partition.Value} offset {result.Offset.Value}");
+            _logger.LogInformation("CreateGame Event published to {partition}:{offset}", 
+                result.Partition.Value, result.Offset.Value);
         }
     }
 }

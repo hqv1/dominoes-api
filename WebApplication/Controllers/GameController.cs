@@ -23,7 +23,7 @@ namespace Hqv.Dominoes.WebApplication.Controllers
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] CreateGameModel createGameModel, [FromHeader] string correlationId)
         {
-            _logger.LogDebugOrElevate(createGameModel.IsDebug, "Received Create Game Request");
+            _logger.LogDebugOrElevate(createGameModel.IsDebug, "Received Create Game Request with {@Model}", createGameModel);
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);

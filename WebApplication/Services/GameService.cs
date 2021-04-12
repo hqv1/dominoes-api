@@ -23,11 +23,9 @@ namespace Hqv.Dominoes.WebApplication.Services
         
         public async Task Create(CreateGameBag createGameBag)
         {
-            _logger.LogDebugOrElevate(createGameBag.CreateGameModel.IsDebug, "Mapping model to event");
             var createGameEvent = _mapper.Map<CreateGameEvent>(createGameBag);
-            _logger.LogDebugOrElevate(createGameBag.CreateGameModel.IsDebug, "Publishing event");
+            _logger.LogDebugOrElevate(createGameEvent.IsDebug, "Event created. {@Event}", createGameEvent);
             await _publisher.Publish(createGameEvent);
-            _logger.LogDebugOrElevate(createGameBag.CreateGameModel.IsDebug, "Service complete");
         }
     }
 }
