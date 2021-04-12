@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using Hqv.Dominoes.WebApplication.Models;
 using Hqv.Dominoes.WebApplication.Services;
+using Hqv.Dominoes.WebApplication.Setup;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -20,15 +21,15 @@ namespace Hqv.Dominoes.WebApplication.Controllers
         }
         
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] CreateGameModel createGameModel)
+        public async Task<IActionResult> Post([FromBody] CreateGameModel createGameModel, [FromHeader] string correlationId)
         {
-            _logger.LogInformation("Received Create Game Request");
+            _logger.LogDebugOrElevate(createGameModel.IsDebug, "Received Create Game Request with {@Model}", createGameModel);
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
             
-            await _gameService.Create(createGameModel);
+            await _gameService.Create(new CreateGameBag(correlationId, createGameModel));
             return Ok();
         }
     }

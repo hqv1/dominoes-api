@@ -2,12 +2,14 @@ using FluentValidation.AspNetCore;
 using Hqv.Dominoes.WebApplication.Components;
 using Hqv.Dominoes.WebApplication.Services;
 using Hqv.Dominoes.WebApplication.Setup;
+using Hqv.Dominoes.WebApplication.Setup.Middlewares;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using Serilog;
 
 namespace Hqv.Dominoes.WebApplication
 {
@@ -55,6 +57,10 @@ namespace Hqv.Dominoes.WebApplication
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Dominoes WebApplication v1"));
             }
 
+            app.UseSetDefaultHeaders();
+            app.UseLogDefaultHeaders();
+            app.UseSerilogRequestLogging();
+            
             app.UseHttpsRedirection();
 
             app.UseRouting();

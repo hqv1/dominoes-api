@@ -2,7 +2,8 @@ namespace Hqv.Dominoes.WebApplication.Models
 {
     public class CreateGameModel
     {
-        public string? CorrelationId { get; set; }
+        public bool IsTest { get; set; }
+        public bool IsDebug { get; set; }
         public PlayerModel? Player { get; set; }
     }
 }

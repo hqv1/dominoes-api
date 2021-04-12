@@ -20,20 +20,21 @@ namespace Hqv.Dominoes.WebApplication.Test
         public void ShouldMapToCreateGameEvent()
         {
             // Given a Create Game Model
-            var inputCreateGameModel = _testDataCreator.GenerateCreateGameModel();
+            var inputCreateGameBag = _testDataCreator.GenerateCreateGameBag();
 
             // Given a mapper
             var mapper = new MapperConfiguration(c => c.AddProfile<AutoMapperProfile>())
                 .CreateMapper();
 
             // When mapper is used
-            var actualCreateGameEvent = mapper.Map<CreateGameEvent>(inputCreateGameModel);
+            var actualCreateGameEvent = mapper.Map<CreateGameEvent>(inputCreateGameBag);
             
             // Then a Create Game Event is created
             // And some values are mapped
-            var inputPlayer = inputCreateGameModel.Player;
+            var inputPlayer = inputCreateGameBag.CreateGameModel.Player;
             var actualPlayer = actualCreateGameEvent.Player;
-            actualCreateGameEvent.CorrelationId.Should().BeSameAs(inputCreateGameModel.CorrelationId);
+            actualCreateGameEvent.CorrelationId.Should().BeSameAs(inputCreateGameBag.CorrelationId);
+            actualCreateGameEvent.IsTest.Should().Be(inputCreateGameBag.CreateGameModel.IsTest);
             actualPlayer.Id.Should().BeSameAs(inputPlayer?.Id);
         }
     }
