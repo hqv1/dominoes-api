@@ -72,8 +72,8 @@ namespace Hqv.Dominoes.WebApplication
             app.UseHttpMetrics();
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapMetrics();
                 endpoints.MapControllers();
+                endpoints.MapMetrics();
             });
         }
     }
