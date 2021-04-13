@@ -9,6 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using Prometheus;
 using Serilog;
 
 namespace Hqv.Dominoes.WebApplication
@@ -64,6 +65,10 @@ namespace Hqv.Dominoes.WebApplication
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            // Prometheus
+            app.UseMetricServer();
+            app.UseHttpMetrics();
 
             app.UseAuthorization();
 
