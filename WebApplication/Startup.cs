@@ -9,6 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using Prometheus;
 using Serilog;
 
 namespace Hqv.Dominoes.WebApplication
@@ -56,7 +57,7 @@ namespace Hqv.Dominoes.WebApplication
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Dominoes WebApplication v1"));
             }
-
+            
             app.UseSetDefaultHeaders();
             app.UseLogDefaultHeaders();
             app.UseSerilogRequestLogging();
@@ -66,8 +67,14 @@ namespace Hqv.Dominoes.WebApplication
             app.UseRouting();
 
             app.UseAuthorization();
-
-            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+            
+            // Prometheus
+            app.UseHttpMetrics();
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+                endpoints.MapMetrics();
+            });
         }
     }
 }
