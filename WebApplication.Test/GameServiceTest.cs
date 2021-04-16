@@ -1,7 +1,6 @@
-using System.Security.Cryptography.X509Certificates;
 using AutoMapper;
+using Hqv.Dominoes.Shared.Events.Game;
 using Hqv.Dominoes.WebApplication.Components;
-using Hqv.Dominoes.WebApplication.Events;
 using Hqv.Dominoes.WebApplication.Services;
 using Hqv.Dominoes.WebApplication.Test.Generator;
 using Microsoft.Extensions.Logging;

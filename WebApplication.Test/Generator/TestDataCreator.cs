@@ -1,7 +1,7 @@
 using Bogus;
-using Hqv.Dominoes.WebApplication.Events;
+using Hqv.Dominoes.Shared.Events.Common;
+using Hqv.Dominoes.Shared.Events.Game;
 using Hqv.Dominoes.WebApplication.Models;
-using Microsoft.AspNetCore.Http;
 
 namespace Hqv.Dominoes.WebApplication.Test.Generator
 {
