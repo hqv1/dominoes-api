@@ -39,35 +39,6 @@ jobs:
         run: |
          echo ::set-output name=sha_short::$(git rev-parse --short=7 ${{ github.sha }})
 
-      # - name: Setup Access to Private NUGET Feed
-      #   uses: actions/setup-dotnet@v1
-      #   with:
-      #     source-url: ${{secrets.NUGET_URL}}
-      #   env:
-      #     NUGET_AUTH_TOKEN: ${{secrets.NUGET_API_KEY}}
-
-      # - name: Ensure GitHub NuGet Source
-      #   run: |
-      #     dotnet nuget add source ${{secrets.NUGET_URL}} \
-      #       -n myget \
-      #       -u ${{ secrets.NUGET_USER }} \
-      #       -p ${{ secrets.NUGET_API_KEY }} \
-      #       --store-password-in-clear-text
-
-      # - name: Ensure GitHub NuGet Source
-      #   run: |
-      #     dotnet nuget add source https://www.myget.org/F/hqv/api/v3/index.json \
-      #       -n MyGet \
-      #       -u ${{ secrets.NUGET_USER }} \
-      #       -p ${{ secrets.NUGET_PASSWORD }} \
-      #       --store-password-in-clear-text
-
-      - name: List Nuget Sources
-        run: dotnet nuget list source
-
-      # - name: Build and push Docker image (Test)
-      #   run: /usr/bin/docker buildx build --tag hqv1/dominoes-api:f8ff80f --platform linux/amd64,linux/arm64 --push ./WebApplication
-
       - name: Build and push Docker image
         id: docker_build
         uses: docker/build-push-action@v2
