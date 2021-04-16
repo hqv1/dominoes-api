@@ -46,13 +46,22 @@ jobs:
       #   env:
       #     NUGET_AUTH_TOKEN: ${{secrets.NUGET_API_KEY}}
 
+      # - name: Ensure GitHub NuGet Source
+      #   run: |
+      #     dotnet nuget add source ${{secrets.NUGET_URL}} \
+      #       -n myget \
+      #       -u ${{ secrets.NUGET_USER }} \
+      #       -p ${{ secrets.NUGET_API_KEY }} \
+      #       --store-password-in-clear-text
+
       - name: Ensure GitHub NuGet Source
         run: |
-          dotnet nuget add source ${{secrets.NUGET_URL}} \
-            -n myget \
+          dotnet nuget add source https://www.myget.org/F/hqv/api/v3/index.json \
+            -n MyGet \
             -u ${{ secrets.NUGET_USER }} \
-            -p ${{ secrets.NUGET_API_KEY }} \
+            -p ${{ secrets.NUGET_PASSWORD }} \
             --store-password-in-clear-text
+
 
       - name: Build and push Docker image
         id: docker_build
