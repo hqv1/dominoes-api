@@ -39,6 +39,13 @@ jobs:
         run: |
          echo ::set-output name=sha_short::$(git rev-parse --short=7 ${{ github.sha }})
 
+      - name: Setup Access to Private NUGET Feed
+        uses: actions/setup-dotnet@v1
+        with:
+          source-url: ${{secrets.NUGET_URL}}
+        env:
+          NUGET_AUTH_TOKEN: ${{secrets.NUGET_API_KEY}}
+
       - name: Build and push Docker image
         id: docker_build
         uses: docker/build-push-action@v2
