@@ -54,13 +54,13 @@ jobs:
       #       -p ${{ secrets.NUGET_API_KEY }} \
       #       --store-password-in-clear-text
 
-      - name: Ensure GitHub NuGet Source
-        run: |
-          dotnet nuget add source https://www.myget.org/F/hqv/api/v3/index.json \
-            -n MyGet \
-            -u ${{ secrets.NUGET_USER }} \
-            -p ${{ secrets.NUGET_PASSWORD }} \
-            --store-password-in-clear-text
+      # - name: Ensure GitHub NuGet Source
+      #   run: |
+      #     dotnet nuget add source https://www.myget.org/F/hqv/api/v3/index.json \
+      #       -n MyGet \
+      #       -u ${{ secrets.NUGET_USER }} \
+      #       -p ${{ secrets.NUGET_PASSWORD }} \
+      #       --store-password-in-clear-text
 
       - name: List Nuget Sources
         run: dotnet nuget list source
