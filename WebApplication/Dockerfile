@@ -2,6 +2,7 @@ FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build-env
 WORKDIR /app
 
 # Copy Solution or Project(s) as distinct layers
+COPY NuGet.Config ./
 COPY *.csproj ./
 RUN dotnet restore
 

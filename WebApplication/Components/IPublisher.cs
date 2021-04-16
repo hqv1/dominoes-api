@@ -1,5 +1,5 @@
 using System.Threading.Tasks;
-using Hqv.Dominoes.WebApplication.Events;
+using Hqv.Dominoes.Shared.Events.Game;
 
 namespace Hqv.Dominoes.WebApplication.Components
 {

@@ -13,6 +13,7 @@
     <ItemGroup>
         <PackageReference Include="Bogus" Version="33.0.2" />
         <PackageReference Include="FluentAssertions" Version="5.10.3" />
+        <PackageReference Include="Hqv.Dominoes.Shared.Events" Version="1.0.0" />
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.7.1" />
         <PackageReference Include="Moq" Version="4.16.1" />
         <PackageReference Include="xunit" Version="2.4.1" />

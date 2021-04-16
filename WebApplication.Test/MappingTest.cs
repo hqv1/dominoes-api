@@ -1,6 +1,6 @@
 using AutoMapper;
 using FluentAssertions;
-using Hqv.Dominoes.WebApplication.Events;
+using Hqv.Dominoes.Shared.Events.Game;
 using Hqv.Dominoes.WebApplication.Setup;
 using Hqv.Dominoes.WebApplication.Test.Generator;
 using Xunit;

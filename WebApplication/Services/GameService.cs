@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
 using AutoMapper;
+using Hqv.Dominoes.Shared.Events.Game;
 using Hqv.Dominoes.WebApplication.Components;
-using Hqv.Dominoes.WebApplication.Events;
 using Hqv.Dominoes.WebApplication.Models;
 using Hqv.Dominoes.WebApplication.Setup;
 using Microsoft.Extensions.Logging;
