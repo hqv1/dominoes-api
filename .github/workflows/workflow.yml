@@ -66,7 +66,7 @@ jobs:
         run: dotnet nuget list source
 
       - name: Build and push Docker image (Test)
-        run: /usr/bin/docker buildx build --tag ***/dominoes-api:f8ff80f --platform linux/amd64,linux/arm64 --push ./WebApplication
+        run: /usr/bin/docker buildx build --tag hqv1/dominoes-api:f8ff80f --platform linux/amd64,linux/arm64 --push ./WebApplication
 
       # - name: Build and push Docker image
       #   id: docker_build
