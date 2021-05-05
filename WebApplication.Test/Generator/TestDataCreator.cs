@@ -13,9 +13,6 @@ namespace Hqv.Dominoes.WebApplication.Test.Generator
         private readonly Faker<CreateGameBag> _testCreateGameBags;
         private readonly Faker<CreateGameModel> _testCreateGameModels;
         
-        private readonly Faker<CreateGameEvent> _testCreateGameEvent;
-        
-
         public TestDataCreator()
         {
             var testPlayerModels = new Faker<PlayerModel>()
@@ -42,23 +39,12 @@ namespace Hqv.Dominoes.WebApplication.Test.Generator
                     f.Name.FullName(),
                     f.Internet.IpAddress().ToString()
                 ));
-            _testCreateGameEvent = new Faker<CreateGameEvent>()
-                .CustomInstantiator(f => new CreateGameEvent(
-                    f.Random.AlphaNumeric(10),
-                    false,
-                    false,
-                    testPlayer.Generate()
-                ));
+
         }
 
         public CreateGameModel GenerateCreateGameModel()
         {
             return _testCreateGameModels.Generate();
-        }
-
-        public CreateGameEvent GenerateCreateGameEvent()
-        {
-            return _testCreateGameEvent.Generate();
         }
 
         public CreateGameBag GenerateCreateGameBag()

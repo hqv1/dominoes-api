@@ -12,20 +12,21 @@ namespace Hqv.Dominoes.WebApplication.Test
     public class GameServiceTest
     {
         private readonly GameService _gameService;
-        private readonly Mock<ILogger<GameService>> _mockedLogger;
         private readonly Mock<IMapper> _mockedMapper;
         private readonly Mock<IPublisher> _mockedPublisher;
         private readonly TestDataCreator _testDataCreator;
+        private readonly Hqv.Dominoes.Shared.TestUtilities.TestDataCreator _sharedTestDataCreator;
 
         public GameServiceTest()
         {
-            _mockedLogger = new Mock<ILogger<GameService>>();
+            var mockedLogger = new Mock<ILogger<GameService>>();
             _mockedMapper = new Mock<IMapper>();
             _mockedPublisher = new Mock<IPublisher>();
             
-            _gameService = new GameService(_mockedLogger.Object, _mockedMapper.Object, _mockedPublisher.Object);
+            _gameService = new GameService(mockedLogger.Object, _mockedMapper.Object, _mockedPublisher.Object);
 
             _testDataCreator = new TestDataCreator();
+            _sharedTestDataCreator = new Shared.TestUtilities.TestDataCreator();
         }
 
         [Fact]
@@ -33,7 +34,7 @@ namespace Hqv.Dominoes.WebApplication.Test
         {
             // Given Create Game Model
             var inputCreateGameBag = _testDataCreator.GenerateCreateGameBag();
-            var createGameEvent = _testDataCreator.GenerateCreateGameEvent();
+            var createGameEvent = _sharedTestDataCreator.GenerateCreateGameEvent();
 
             _mockedMapper.Setup(x => x.Map<CreateGameEvent>(inputCreateGameBag)).Returns(createGameEvent);
             
