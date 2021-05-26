@@ -32,10 +32,10 @@ namespace Hqv.Dominoes.WebApplication.Test
             // Then a Create Game Event is created
             // And some values are mapped
             var inputPlayer = inputCreateGameBag.CreateGameModel.Player;
-            var actualPlayer = actualCreateGameEvent.Player;
+            var actualPlayer = actualCreateGameEvent.GamePlayer;
             actualCreateGameEvent.CorrelationId.Should().BeSameAs(inputCreateGameBag.CorrelationId);
             actualCreateGameEvent.IsTest.Should().Be(inputCreateGameBag.CreateGameModel.IsTest);
-            actualPlayer.Id.Should().BeSameAs(inputPlayer?.Id);
+            actualPlayer.EmailAddress.Should().BeSameAs(inputPlayer?.EmailAddress);
         }
     }
 }

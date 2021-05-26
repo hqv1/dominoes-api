@@ -17,7 +17,7 @@ namespace Hqv.Dominoes.WebApplication.Test.Generator
         {
             var testPlayerModels = new Faker<PlayerModel>()
                 .StrictMode(true)
-                .RuleFor(p=>p.Id, f=>f.Random.AlphaNumeric(10))
+                .RuleFor(p=>p.EmailAddress, f=>f.Random.AlphaNumeric(10) + "@yahoo.com")
                 .RuleFor(p => p.Name, f => f.Name.FullName())
                 .RuleFor(p => p.IpAddress, f => f.Internet.IpAddress().ToString() );
 
@@ -33,8 +33,8 @@ namespace Hqv.Dominoes.WebApplication.Test.Generator
                     _testCreateGameModels.Generate()
                 ));
             
-            var testPlayer = new Faker<Player>()
-                .CustomInstantiator(f => new Player(
+            var testPlayer = new Faker<GamePlayer>()
+                .CustomInstantiator(f => new GamePlayer(
                     f.Random.AlphaNumeric(10),
                     f.Name.FullName(),
                     f.Internet.IpAddress().ToString()

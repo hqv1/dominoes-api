@@ -9,11 +9,11 @@ namespace Hqv.Dominoes.WebApplication.Setup
     {
         public AutoMapperProfile()
         {
-            CreateMap<PlayerModel, Player>();
+            CreateMap<PlayerModel, GamePlayer>();
             CreateMap<CreateGameBag, CreateGameEvent>()
                 .ForCtorParam("isTest", opt=> opt.MapFrom(src=>src.CreateGameModel.IsTest))
                 .ForCtorParam("isDebug", opt=> opt.MapFrom(src=>src.CreateGameModel.IsDebug))
-                .ForCtorParam("player", opt=> opt.MapFrom(src=>src.CreateGameModel.Player))
+                .ForCtorParam("gamePlayer", opt=> opt.MapFrom(src=>src.CreateGameModel.Player))
                 ;
         }
     }
